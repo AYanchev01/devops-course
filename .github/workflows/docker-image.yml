@@ -33,10 +33,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - name: Build Docker image
-      uses: docker/build-push-action@v2
-      with:
-        push: false
-        tags: ayanchev/python-app:latest
+      run: docker build -t ayanchev/python-app:latest .
 
     - name: Scan the Docker image with Trivy
       uses: aquasecurity/trivy-action@master
@@ -48,7 +45,4 @@ jobs:
 
     - name: Push Docker image
       if: success()
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        tags: ayanchev/python-app:latest
+      run: docker push ayanchev/python-app:latest
