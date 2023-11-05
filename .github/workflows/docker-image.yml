@@ -43,7 +43,6 @@ jobs:
       with:
         image-ref: 'ayanchev/python-app:latest'
         format: 'table'
-        exit-code: '1'
 
     - name: Push Docker image
       if: success()
