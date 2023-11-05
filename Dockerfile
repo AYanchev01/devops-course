@@ -1,15 +1,24 @@
-FROM ubuntu:latest
+# Use a build stage to install dependencies
+FROM python:3.11-alpine as builder
 
-WORKDIR /app
+# Set a working directory for the build stage
+WORKDIR /build
 
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip
-
+# Copy the requirements file and install dependencies
 COPY src/requirements.txt .
+RUN pip install --no-cache-dir --prefix="/install" -r requirements.txt
 
-RUN pip3 install -r requirements.txt
-
+# Copy the application source code
 COPY src/ .
+
+# Final stage
+FROM python:3.11-alpine
+# Set the working directory for the final image
+WORKDIR /app
+# Copy installed dependencies from the builder stage
+COPY --from=builder /install /usr/local
+# Copy the application source code from the builder stage
+COPY --from=builder /build /app
 
 EXPOSE 5000
 
