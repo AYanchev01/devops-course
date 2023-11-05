@@ -19,7 +19,9 @@ jobs:
         password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
     - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/python-3.8@master
+      uses: snyk/actions/python@master
+      with:
+        args: --directory=./src/
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
