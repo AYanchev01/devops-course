@@ -20,6 +20,10 @@ COPY --from=builder /install /usr/local
 # Copy the application source code from the builder stage
 COPY --from=builder /build /app
 
+RUN adduser -D appuser && \
+    chown -R appuser:appuser /app
+USER appuser
+
 EXPOSE 5000
 
 CMD ["python3", "app.py"]
