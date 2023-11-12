@@ -39,7 +39,7 @@ jobs:
         run: markdownlint '**/*.md'
 
   build:
-    needs: lint-check 
+    needs: lint-check
     runs-on: ubuntu-latest
 
     steps:
