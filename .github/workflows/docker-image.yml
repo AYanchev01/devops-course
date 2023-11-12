@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  flake8_py3:
+  lint-check:
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Repository
@@ -23,7 +23,7 @@ jobs:
       - name: Run flake8
         uses: suo/flake8-github-action@releases/v1
         with:
-          checkName: 'flake8_py3'
+          checkName: 'lint-check'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,7 +39,7 @@ jobs:
         run: markdownlint '**/*.md'
 
   build:
-    needs: flake8_py3
+    needs: lint-check 
     runs-on: ubuntu-latest
 
     steps:
