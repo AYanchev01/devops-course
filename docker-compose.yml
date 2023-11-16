@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.1
+    container_name: mysql
+    environment:
+      MYSQL_USER: flyway
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: example
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - flyway-net
+
+  flyway:
+    image: redgate/flyway
+    container_name: flyway
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./config:/flyway/conf
+      - ./sql:/flyway/sql
+    entrypoint: /bin/bash
+    command: -c "flyway migrate"
+    networks:
+      - flyway-net
+
+networks:
+  flyway-net:
+
+volumes:
+  mysql_data:
