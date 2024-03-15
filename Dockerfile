@@ -1,5 +1,5 @@
 # Use a build stage to install dependencies
-FROM python:3.11-alpine as builder
+FROM python:3.13.0a4-alpine as builder
 
 # Update and upgrade libcrypto3 and libssl3 to address vulnerabilities
 RUN apk update && \
@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir --prefix="/install" -r requirements.txt
 COPY src/ .
 
 # Final stage
-FROM python:3.11-alpine
+FROM python:3.13.0a4-alpine
 
 # Update and upgrade libcrypto3 and libssl3 in the final stage as well
 RUN apk update && \
